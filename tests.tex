@@ -1,0 +1,197 @@
+\section{Playing the Game by Hand}
+
+Before looking for a formula, we play the game by hand for every $n$ from $1$
+to $16$, starting with person~$1$ as in Section~\ref{sec:assumption}. The results are
+collected in Table~\ref{tab:results} at the end of this section.
+
+\subsection{Conventions}\label{sec:conventions}
+
+A \emph{round} is one turn of the circle. It ends when the game comes back to
+the beginning of the circle, and the next round goes on with the people still
+present. When $n$ is odd, the first round skips person $n$ and eliminates
+person $1$, who comes right after him: we count this elimination in the first
+round.
+
+Up to $n=7$, and for $n=16$, we draw the circle at the end of each round and
+write under it the people eliminated during that round, in order. From $n=8$
+to $n=15$ we draw only the final circle, with the rounds written under it.
+The symbols are the following:
+\begin{center}
+\begin{tikzpicture}[baseline=-0.6ex]
+  \node[person] at (0,0) {4};
+  \node[anchor=west,font=\footnotesize] at (0.35,0) {still in the circle};
+  \node[gone] (a) at (3.4,0) {2}; \cross{a}
+  \node[anchor=west,font=\footnotesize] at (3.75,0) {eliminated};
+  \node[gone] (b) at (6.2,0) {2}; \cross[gray!40]{b}
+  \node[anchor=west,font=\footnotesize] at (6.55,0) {eliminated in an earlier round};
+  \node[person] (c) at (11.9,0) {5}; \draw[aimscolour,very thick] (c) circle ({0.5*\nodesize+0.8mm});
+  \node[anchor=west,font=\footnotesize] at (12.3,0) {survivor};
+\end{tikzpicture}
+\end{center}
+
+\subsection{The sixteen tests}
+
+\subsubsection{For $n=1,2,3$}
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=1$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}}
+\centering\gamecircle{1}{0}{}{}{1}\tabularnewline[2pt]
+\centering\scriptsize No elimination\\ $J(1)=1$\tabularnewline
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=2$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}}
+\centering\gamecircle{2}{0.45}{}{2}{1}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2\\ $J(2)=1$\tabularnewline
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=3$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}}
+\centering\gamecircle{3}{0.60}{}{2,1}{3}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 1\\ $J(3)=3$\tabularnewline
+\end{tabular}}
+\end{minipage}\par\vspace{6pt}
+
+\subsubsection{For $n=4$ to $7$}
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{0.48\linewidth}\centering
+\textbf{$n=4$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}p{2.40cm}}
+\centering\gamecircle{4}{0.60}{}{2,4}{0} & \centering\gamecircle{4}{0.60}{2,4}{3}{1}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 4 & \centering\scriptsize Round 2: 3\\ $J(4)=1$\tabularnewline
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}\centering
+\textbf{$n=5$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}p{2.40cm}}
+\centering\gamecircle{5}{0.85}{}{2,4,1}{0} & \centering\gamecircle{5}{0.85}{2,4,1}{5}{3}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 4, 1 & \centering\scriptsize Round 2: 5\\ $J(5)=3$\tabularnewline
+\end{tabular}}
+\end{minipage}\par\vspace{6pt}
+
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{0.48\linewidth}\centering
+\textbf{$n=6$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}p{2.40cm}}
+\centering\gamecircle{6}{0.85}{}{2,4,6}{0} & \centering\gamecircle{6}{0.85}{2,4,6}{3,1}{5}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 4, 6 & \centering\scriptsize Round 2: 3, 1\\ $J(6)=5$\tabularnewline
+\end{tabular}}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}\centering
+\textbf{$n=7$}\\[3pt]
+{\setlength{\tabcolsep}{3pt}\begin{tabular}{p{2.40cm}p{2.40cm}}
+\centering\gamecircle{7}{0.85}{}{2,4,6,1}{0} & \centering\gamecircle{7}{0.85}{2,4,6,1}{5,3}{7}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 4, 6, 1 & \centering\scriptsize Round 2: 5, 3\\ $J(7)=7$\tabularnewline
+\end{tabular}}
+\end{minipage}\par\vspace{6pt}
+
+\subsubsection{For $n=8$ to $15$}
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=8$}\\[3pt]
+{\gamecircle{8}{1.00}{}{2,4,6,8,3,7,5}{1}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8\\ Round 2: 3, 7\\ Round 3: 5\\ $J(8)=1$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=9$}\\[3pt]
+{\gamecircle{9}{1.00}{}{2,4,6,8,1,5,9,7}{3}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 1\\ Round 2: 5, 9\\ Round 3: 7\\ $J(9)=3$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=10$}\\[3pt]
+{\gamecircle{10}{1.00}{}{2,4,6,8,10,3,7,1,9}{5}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10\\ Round 2: 3, 7, 1\\ Round 3: 9\\ $J(10)=5$}
+\end{minipage}\par\vspace{6pt}
+
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=11$}\\[3pt]
+{\gamecircle{11}{1.00}{}{2,4,6,8,10,1,5,9,3,11}{7}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10, 1\\ Round 2: 5, 9, 3\\ Round 3: 11\\ $J(11)=7$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=12$}\\[3pt]
+{\gamecircle{12}{1.00}{}{2,4,6,8,10,12,3,7,11,5,1}{9}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10, 12\\ Round 2: 3, 7, 11\\ Round 3: 5, 1\\ $J(12)=9$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=13$}\\[3pt]
+{\renewcommand{\nodesize}{4.6mm}\gamecircle{13}{1.15}{}{2,4,6,8,10,12,1,5,9,13,7,3}{11}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10, 12, 1\\ Round 2: 5, 9, 13\\ Round 3: 7, 3\\ $J(13)=11$}
+\end{minipage}\par\vspace{6pt}
+
+\par\vspace{6pt}\noindent
+\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=14$}\\[3pt]
+{\renewcommand{\nodesize}{4.6mm}\gamecircle{14}{1.15}{}{2,4,6,8,10,12,14,3,7,11,1,9,5}{13}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10, 12, 14\\ Round 2: 3, 7, 11, 1\\ Round 3: 9, 5\\ $J(14)=13$}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.32\linewidth}\centering
+\textbf{$n=15$}\\[3pt]
+{\renewcommand{\nodesize}{4.6mm}\gamecircle{15}{1.15}{}{2,4,6,8,10,12,14,1,5,9,13,3,11,7}{15}}\\[3pt]
+{\scriptsize Round 1: 2, 4, 6, 8, 10, 12, 14, 1\\ Round 2: 5, 9, 13, 3\\ Round 3: 11, 7\\ $J(15)=15$}
+\end{minipage}\hfill\null
+\par\vspace{6pt}
+
+\subsubsection{For $n=16$}
+\par\vspace{6pt}\noindent
+\begin{minipage}[t]{1\linewidth}\centering
+\textbf{$n=16$}\\[3pt]
+{\renewcommand{\nodesize}{4.3mm}\renewcommand{\nodefont}{\tiny}\setlength{\tabcolsep}{3pt}\begin{tabular}{p{3.00cm}p{3.00cm}p{3.00cm}p{3.00cm}}
+\centering\gamecircle{16}{1.15}{}{2,4,6,8,10,12,14,16}{0} & \centering\gamecircle{16}{1.15}{2,4,6,8,10,12,14,16}{3,7,11,15}{0} & \centering\gamecircle{16}{1.15}{2,4,6,8,10,12,14,16,3,7,11,15}{5,13}{0} & \centering\gamecircle{16}{1.15}{2,4,6,8,10,12,14,16,3,7,11,15,5,13}{9}{1}\tabularnewline[2pt]
+\centering\scriptsize Round 1: 2, 4, 6, 8, 10, 12, 14, 16 & \centering\scriptsize Round 2: 3, 7, 11, 15 & \centering\scriptsize Round 3: 5, 13 & \centering\scriptsize Round 4: 9\\ $J(16)=1$\tabularnewline
+\end{tabular}}
+\end{minipage}\par\vspace{6pt}
+
+\subsection{Summary of the tests}
+
+We write each $n$ as the largest power of $2$ that is not bigger than $n$,
+plus a remainder: $n=2^m+\ell$ with $0\leq\ell<2^m$. Table~\ref{tab:results}
+puts this decomposition next to the survivor found in the tests.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$n$ & $n=2^m+\ell$ & $m$ & $\ell$ & $J(n)$ & $2\ell+1$\\ \hline
+$1$ & $2^{0}+0$ & $0$ & $0$ & $1$ & $1$\\
+\hline
+$2$ & $2^{1}+0$ & $1$ & $0$ & $1$ & $1$\\
+$3$ & $2^{1}+1$ & $1$ & $1$ & $3$ & $3$\\
+\hline
+$4$ & $2^{2}+0$ & $2$ & $0$ & $1$ & $1$\\
+$5$ & $2^{2}+1$ & $2$ & $1$ & $3$ & $3$\\
+$6$ & $2^{2}+2$ & $2$ & $2$ & $5$ & $5$\\
+$7$ & $2^{2}+3$ & $2$ & $3$ & $7$ & $7$\\
+\hline
+$8$ & $2^{3}+0$ & $3$ & $0$ & $1$ & $1$\\
+$9$ & $2^{3}+1$ & $3$ & $1$ & $3$ & $3$\\
+$10$ & $2^{3}+2$ & $3$ & $2$ & $5$ & $5$\\
+$11$ & $2^{3}+3$ & $3$ & $3$ & $7$ & $7$\\
+$12$ & $2^{3}+4$ & $3$ & $4$ & $9$ & $9$\\
+$13$ & $2^{3}+5$ & $3$ & $5$ & $11$ & $11$\\
+$14$ & $2^{3}+6$ & $3$ & $6$ & $13$ & $13$\\
+$15$ & $2^{3}+7$ & $3$ & $7$ & $15$ & $15$\\
+\hline
+$16$ & $2^{4}+0$ & $4$ & $0$ & $1$ & $1$\\
+\hline
+\end{tabular}
+\captionof{table}{The tests for $n=1,\dots,16$. The horizontal lines separate
+the blocks $2^m\leq n<2^{m+1}$.}
+\label{tab:results}
+\end{center}
+
+Three things stand out in Table~\ref{tab:results}.
+\begin{itemize}
+  \item All the survivors are odd.
+  \item The survivor is person $1$ when $n=1,2,4,8,16$, that is when $n$ is a
+        power of $2$.
+  \item Inside each block between two lines, the survivor goes up by $2$ each
+        time a person is added. In every line, $J(n)$ is equal to $2\ell+1$.
+\end{itemize}
+These are only remarks on sixteen cases. We prove them in Sections~3
+and~4.

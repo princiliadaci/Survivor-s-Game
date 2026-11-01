@@ -1,0 +1,192 @@
+% The Survivor's Number, Group 6
+% Author: Princilia DACI
+\documentclass[12pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{multirow,multicol}
+\usepackage{pifont,hyperref,lastpage,fancyhdr,movie15,float}
+
+
+\usepackage[left=3cm,right=3cm,top=4cm,bottom=3cm]{geometry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% Footer and Header %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{fancy}                                                     %%%
+\fancyhf{} 		                                                      %%%
+\lfoot{\tiny\textsf{\includegraphics[width=1.8cm]{AIMSSenegalLogo}    %%%
+Po.Box~1418 Mbour-Thies,~phone~{(+221) 33 956 7693},~                 %%%
+\url{http://www.aims-senegal.org}}}                                   %%%
+\rfoot{\bfseries Page \thepage~of \pageref{LastPage}}                 %%%
+\renewcommand{\footrulewidth}{1.pt}\renewcommand{\headrulewidth}{0pt} %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Fill here information about the present assignment %%%%%%%%%%%%%%
+\newcommand{\code}{Group 6}                                       %%%
+\newcommand{\deadline}{01 Nov 2026}                                  %%%
+\newcommand{\assignment}{Group project (Problem 0.6) ON Mathematical Problem Solving}			  %%% 
+\newcommand{\lecturer}{Lecturer: Dr Audace A. V. Dossou-Olory}                     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%  Title at the first page  %%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace*{-4cm}\begin{minipage}{\textwidth}                     %%%
+\begin{center}                                                        %%%
+\begin{tabular}{|c|c|c|}                                              %%%
+\hline\multicolumn{3}{|c|}{\bf\scriptsize\MakeUppercase\assignment}\\ %%%
+\hline{\small Student's Code}&                                        %%%
+\multirow{3}{7cm}{\includegraphics[width=7.5cm,height=2.3cm]{AIMSSenegalLogo}} %%%
+& {\small Deadline}\\                                                 %%%
+\cline{1-1}\cline{3-3}{\small\bf\code}&&{\small\bf\deadline} \\       %%%
+\cline{1-1}\cline{3-3}{\small\today} &&{\small2026-2027}\\            %%%
+\hline\multicolumn{3}{|r|}{\scriptsize\lecturer}\\\hline              %%%
+\end{tabular}                                                         %%%
+\end{center}                                                          %%%
+\end{minipage}\hfill\date{}\vspace*{-1cm}}                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\newtheorem{theo}{Theorem}
+\newtheorem{defi}{Definition}
+\newenvironment{proof}[1][Proof.]{\textbf{#1~}}{\ \rule{0.5em}{0.5em}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%% Added for our report (Group 6) %%%%%%%%%%%%%%%%%%%%
+\hypersetup{hidelinks,
+  pdfauthor={Princilia DACI},
+  pdftitle={The Survivor's Number},
+  pdfsubject={Mathematical Problem Solving: Projects, Group 6},
+  pdfcreator={Princilia DACI},
+  pdfproducer={Princilia DACI}}
+\usepackage{tikz}
+\usepackage{caption}
+\usepackage[below]{placeins}
+\usepackage{needspace}
+\input{lstlisting}
+\lstset{columns=fullflexible,keepspaces=true,basicstyle=\footnotesize\ttfamily}
+\newtheorem{obs}{Observation}
+\newtheorem{lemma}{Lemma}
+\newtheorem{coro}{Corollary}
+% no single line left alone at the top or bottom of a page
+\clubpenalty=10000
+\widowpenalty=10000
+
+% people on a circle (same colours as in our presentation)
+\providecolor{aimscolour}{rgb}{0.54,0.11,0.01}
+\newcommand{\nodesize}{5mm}
+\newcommand{\nodefont}{\scriptsize}
+\tikzset{
+  person/.style={circle,draw,thick,fill=white,minimum size=\nodesize,inner sep=0pt,font=\nodefont},
+  gone/.style={circle,draw=gray!60,fill=white,text=gray!60,minimum size=\nodesize,inner sep=0pt,font=\nodefont}
+}
+% cross on an eliminated person; the optional argument is the colour
+\newcommand{\cross}[2][aimscolour]{\draw[#1,very thick] (#2.north west) -- (#2.south east) (#2.north east) -- (#2.south west);}
+% n, radius, people eliminated in earlier rounds, people eliminated in this round, survivor (0 if not shown)
+\newcommand{\gamecircle}[5]{%
+  \begin{tikzpicture}[baseline=(current bounding box.center)]
+    \foreach \p in {1,...,#1}
+      \node[person] (p\p) at ({90-360/#1*(\p-1)}:#2) {\p};
+    \foreach \e in {#3} { \node[gone] (b\e) at (p\e) {\e}; \cross[gray!40]{b\e} }
+    \foreach \e in {#4} { \node[gone] (o\e) at (p\e) {\e}; \cross{o\e} }
+    \ifnum#5>0 \draw[aimscolour,very thick] (p#5) circle ({0.5*\nodesize+0.8mm}); \fi
+  \end{tikzpicture}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\maketitle\thispagestyle{fancy}
+
+% first page: title and group
+\vspace*{2.5cm}
+\begin{center}
+{\LARGE\bf The Survivor's Number}\\[12pt]
+{\large Problem 0.6 of the Mathematical Problem Solving projects}\\[2.5cm]
+{\Large\bf Group 6}\\[12pt]
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ll}
+Daci Yimete Princilia Doleresse & Dlamini Sandziso Siyabonga\\
+Fadhul Abdouroihamane & Kambale Maruba Exauc\'e\\
+Marie Hortense Lucie Senamie Saizonou & Oumar Sow\\
+Razan Salah Mohammed Salih Mansour & Samba Diallo
+\end{tabular}\\[2.5cm]
+Supervised by Dr Audace A. V. Dossou-Olory\\[6pt]
+African Institute for Mathematical Sciences (AIMS), Senegal\\[6pt]
+November 2026
+\end{center}
+\newpage
+
+% second page: abstract
+\begin{abstract}
+People numbered $1$ to $n$ stand in a circle. Starting with person $1$, every
+second person is eliminated until only one is left, and $J(n)$ denotes the
+number of this survivor. We first played the game by hand for
+$n=1,\dots,16$. The results suggested three rules: $J(2k)=2J(k)-1$,
+$J(2k+1)=2J(k)+1$, and the fact that every $n$ can be written in exactly one
+way as $n=2^m+\ell$ with $0\leq\ell<2^m$. We proved them with one lemma: the
+game only depends on the places of the people around the circle, not on their
+numbers, so after one turn of the circle it becomes a smaller copy of itself.
+We then proved the formula
+\[
+J(2^m+\ell)=2\ell+1
+\]
+in two ways, by induction on $m$ and by induction on $n$.
+We generalised it to a game that starts with any person $s$: the survivor is
+the person $2\ell$ places after $s$. In base $2$, the formula becomes a simple
+rule, since $J(n)$ is obtained by moving the first digit of $n$ to the end.
+This gives at once, for example, $J(10^9)=926\,258\,177$. Finally, we explain
+the Python code we wrote to simulate the game and to check every result.
+\end{abstract}
+\newpage
+
+% third page: contents
+\setcounter{tocdepth}{2}
+\tableofcontents
+\newpage
+
+\input{introduction}
+\clearpage
+\input{tests}
+\clearpage
+\input{observations}
+\clearpage
+\input{formula}
+\clearpage
+\input{binary}
+\clearpage
+\input{code}
+\clearpage
+\input{conclusion}
+
+\clearpage
+\section*{Acknowledgements}
+\addcontentsline{toc}{section}{Acknowledgements}
+We thank Dr Audace A. V. Dossou-Olory for his course, for his tips, and for
+the time and energy he gave us during this week. He showed us how to face a
+difficult problem with simple and logical steps: start with small cases, look
+for a pattern, make a guess, and prove it. We also thank the tutors for their
+help, and our classmates for the discussions that helped us move forward.
+
+{\footnotesize
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{References}
+\bibitem{course2026} A. A. V. Dossou-Olory, \emph{Mathematical Problem
+Solving: Course Introduction}, lecture slides, African Institute for
+Mathematical Sciences (AIMS), Senegal, 2026.
+\bibitem{projects2026} \emph{Mathematical Problem Solving: Projects},
+project sheet, African Institute for Mathematical Sciences (AIMS), Senegal,
+October 28, 2026.
+\bibitem{concrete} R. L. Graham, D. E. Knuth, O. Patashnik, \emph{Concrete
+Mathematics: A Foundation for Computer Science}, 2nd edition, Addison-Wesley,
+1994, Chapter 1 (The Josephus Problem).
+\end{thebibliography}
+}
+
+\end{document}

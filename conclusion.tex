@@ -1,0 +1,51 @@
+\section{Conclusion}
+
+We started from a simple game: $n$ people in a circle, every second person
+eliminated, and the question of who is left at the end.
+
+By playing the game by hand for $n=1,\dots,16$, we saw that person $1$ survives
+when $n$ is a power of $2$, and that the survivor moves two places each time a
+person is added. The key remark was that the game only depends on the places
+of the people (Lemma~\ref{lem:places}), so that after one turn of the circle
+the game is a smaller copy of itself. It gave the two relations
+\[
+J(2k)=2J(k)-1,\qquad J(2k+1)=2J(k)+1,
+\]
+and, by induction on $m$, the formula
+\[
+J(2^m+\ell)=2\ell+1,\qquad 0\leq\ell<2^m ,
+\]
+which we proved a second time by induction on $n$. Since $2^m$ is the largest
+power of $2$ not bigger than $n$, it can also be written
+$J(n)=2n-2^{m+1}+1$ with $m=\lfloor\log_2 n\rfloor$.
+We then removed the assumption that person $1$ starts: if the game starts with
+person $s$, the survivor is the person $2\ell$ places after $s$. In base $2$,
+the formula becomes a rule on the digits: the first digit of $n$ moves to the
+end. This gives the survivor of a circle of $10^9$ people at once, where the
+game would need almost a billion eliminations. Every result was checked by a
+computer simulation.
+
+The work followed the method of the course: test small cases, look for a
+pattern, state it precisely, and prove it. Each step was needed. The tests
+gave the formula, but they could not prove it: sixteen cases say nothing about
+the seventeenth. The proof, in turn, came from looking closely at one round of
+the game in the tests. The computer was useful at both ends, first to check
+our drawings, then to check the formulas on many more cases than we could do
+by hand. It also showed us that a formula is only fast if it is used well:
+our first program based on the formula was slower than the simulation.
+
+Some questions remain open for us. The first one is to eliminate every third
+person instead of every second one, or more generally every $q$-th person. The
+proof of Lemma~\ref{lem:places} still works: one step now sends the first
+$q-1$ people to the back of the list and eliminates the next one. It gives
+\[
+J_q(n)=\big((J_q(n-1)+q-1)\bmod n\big)+1,
+\]
+where $a\bmod n$ is the remainder of $a$ divided by $n$. For $q=2$ this is
+relation~\eqref{eq:onestep}. We checked this relation with a simulation for
+$q=3,4,5$ and $n<150$. For $q=3$ the survivors for $n=1,\dots,16$ are
+$1,2,2,1,4,1,4,7,1,4,7,10,13,2,5,8$: the survivor goes up by $3$ and comes
+back near the start from time to time, but we did not find a formula as
+simple as $2\ell+1$. The case $q=2$ is special because the circle is exactly
+halved at each round. A last question remains: can we predict the whole
+order of the eliminations, and not only the survivor?

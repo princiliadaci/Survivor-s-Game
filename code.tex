@@ -1,0 +1,239 @@
+\section{The Python Code}
+
+We wrote two Python functions during the project. The first one, \texttt{J\_0},
+plays the game step by step. The second one, \texttt{J\_1}, uses the formula of
+Section~4. In this section we explain how they work, we compare their cost,
+and we give a faster version of the formula together with the program we used
+to check all our results.
+
+\Needspace{23\baselineskip}
+\subsection{\texorpdfstring{\texttt{J\_0}: a simulation of the game}{J\_0: a simulation of the game}}
+
+\begin{lstlisting}[language=iPython, caption={The function \texttt{J\_0}, which simulates the game.}]
+def J_0(n):
+    if n <= 0:
+        return "Please enter a positive integer for n"
+    else:
+        people = [i for i in range(1, n + 1)]
+        print(people)
+        while len(people) > 1:
+            if len(people) % 2 == 0:  # Even case
+                for i in range(len(people)//2):
+                    h = people.pop(i + 1)
+                    print(people, "\t", h, "is eliminated")
+            else:  # Odd case
+                for i in range(len(people)//2):
+                    h = people.pop(i + 1)
+                    print(people, "\t", h, "is eliminated")
+                people.insert(0, people.pop(len(people) - 1))
+                print(people)
+        return f"So {people[0]} is the only survivor"
+\end{lstlisting}
+
+\textbf{The list.} The circle is a Python list, \texttt{people}, which starts
+as $[1,2,\dots,n]$. The person at index $0$ is the next one to be skipped. If
+$n\leq0$ the function returns a message, since the game makes no sense.
+
+\textbf{One pass over the list.} Each turn of the \texttt{while} loop goes once
+through the list and eliminates every second person. The instruction
+\texttt{people.pop(i + 1)} removes the person at index $i+1$. This index is
+the right one because the list shrinks while we go: after $i$ eliminations,
+$i$ people have left the front part of the list, so the person who was at
+index $2i+1$ is now at index $i+1$. For $n=6$:
+\[
+[1,2,3,4,5,6]\xrightarrow{\ \text{pop}(1)\ }[1,3,4,5,6]
+\xrightarrow{\ \text{pop}(2)\ }[1,3,5,6]
+\xrightarrow{\ \text{pop}(3)\ }[1,3,5].
+\]
+With $2k$ people the pass makes $k$ eliminations and ends exactly at the end
+of the list, so the next pass starts again with the person at index $0$, who
+is skipped.
+
+\textbf{The odd case.} With $2k+1$ people the pass also makes $k$
+eliminations, but the last person of the list is skipped at the end of the
+pass. The next one to be eliminated is therefore the first person of the list.
+The instruction
+\begin{center}
+\texttt{people.insert(0, people.pop(len(people) - 1))}
+\end{center}
+moves the last person to the front. Now he is at index $0$ and is skipped, and
+the person after him is eliminated, as in the game. For instance
+$[1,5,9]$ becomes $[9,1,5]$, and the next pass eliminates $1$.
+
+\textbf{Output for $n=10$.} The function prints the list after each
+elimination:
+\Needspace{18\baselineskip}
+\begin{lstlisting}[numbers=none, caption={Output of \texttt{J\_0(10)}.}]
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+[1, 3, 4, 5, 6, 7, 8, 9, 10]   2 is eliminated
+[1, 3, 5, 6, 7, 8, 9, 10]      4 is eliminated
+[1, 3, 5, 7, 8, 9, 10]         6 is eliminated
+[1, 3, 5, 7, 9, 10]            8 is eliminated
+[1, 3, 5, 7, 9]                10 is eliminated
+[1, 5, 7, 9]                   3 is eliminated
+[1, 5, 9]                      7 is eliminated
+[9, 1, 5]
+[9, 5]                         1 is eliminated
+[5, 9]
+[5]                            9 is eliminated
+So 5 is the only survivor
+\end{lstlisting}
+The people are eliminated in the order $2,4,6,8,10,3,7,1,9$, which is the order
+of the statement. The passes of the program are not exactly our rounds: in a
+circle with an odd number of people, we counted the elimination of the first
+person in the current round (Section~\ref{sec:conventions}), while the program
+does it at the start of the next pass. This changes nothing to the order of
+the eliminations or to the survivor.
+
+\Needspace{19\baselineskip}
+\subsection{\texorpdfstring{\texttt{J\_1}: the formula with a slow search}{J\_1: the formula with a slow search}}
+
+\begin{lstlisting}[language=iPython, caption={The function \texttt{J\_1}, which uses the formula $J(n)=2\ell+1$.}]
+def J_1(n):
+    m = 0
+    if n == 1:
+        return 1
+    elif n <= 0:
+        return "Please enter a positive integer for n"
+    else:
+        # Find the greatest m and the corresponding
+        # remainder l such that n = 2^m + l
+        for j in reversed(range(n)):
+            for i in range(n):
+                if n == pow(2, i) + j:
+                    m, l = i, j
+        return 1 + 2*l
+\end{lstlisting}
+
+\textbf{Finding $m$ and $\ell$.} The function tries every pair $(i,j)$ with
+$0\leq i,j<n$ and keeps the pairs with $n=2^i+j$. The outer loop takes $j$ in
+decreasing order, so the last pair kept has the smallest possible $j$. A
+smaller remainder means a larger power of $2$, so the last pair kept is the one
+where $2^i$ is the largest power of $2$ not bigger than $n$. This is the
+decomposition of Observation~\ref{obs:decomp}, and the function returns
+$2\ell+1$.
+
+\textbf{Example.} For $n=10$, the pairs found are $(0,9)$, $(1,8)$, $(2,6)$
+and $(3,2)$, since $10=1+9=2+8=4+6=8+2$. The last one is $(3,2)$, so
+$m=3$, $\ell=2$, and \texttt{J\_1(10)} returns $5$, like \texttt{J\_0(10)}.
+
+\subsection{The cost of \texttt{J\_0} and \texttt{J\_1}}
+
+\textbf{\texttt{J\_0}.} The game has $n-1$ eliminations. Each \texttt{pop}
+may move all the people after the removed one, so one elimination can cost up
+to $n$ operations, and the whole game about $n^2$. On top of that, the
+function prints the whole list after each elimination, which is also of order
+$n^2$ characters. The memory used is of order $n$, for the list.
+
+\textbf{\texttt{J\_1}.} The two loops test $n\times n=n^2$ pairs. Moreover,
+\texttt{pow(2, i)} is a number with $i+1$ digits in base $2$, so for large $i$
+it is not computed in one step. In practice \texttt{J\_1} is even slower than
+\texttt{J\_0}: in our tests, for $n=2000$, \texttt{J\_1} took about $3$
+seconds, while \texttt{J\_0} (with the printing switched off) took about a
+tenth of a second.
+
+So the formula is fast, but this way of using it is not: almost all the work
+goes into the search for $m$ and $\ell$. The next subsection fixes this.
+
+\subsection{Faster versions of the formula}
+
+To find the largest power of $2$ not bigger than $n$, we do not need to try
+every pair. We start from $p=1$ and double $p$ as long as $2p\leq n$. This
+needs only about $\log_2 n$ steps: $30$ steps for $n=10^9$.
+
+\Needspace{29\baselineskip}
+\begin{lstlisting}[language=iPython, caption={Faster functions for $J(n)$ and for a game that starts with person $s$.}]
+def J_2(n):
+    # I look for the largest power of 2 that is not bigger than n,
+    # by doubling p as long as I stay below n
+    p = 1
+    while 2 * p <= n:
+        p = 2 * p
+    l = n - p
+    return 2 * l + 1
+
+
+def J_binary(n):
+    b = bin(n)[2:]               # for example 10 gives '1010'
+    return int(b[1:] + b[0], 2)  # I move the first digit to the end
+
+
+def J_start(n, s):
+    # survivor when the game starts with person s (Section 4.2)
+    p = 1
+    while 2 * p <= n:
+        p = 2 * p
+    l = n - p
+    if s + 2 * l <= n:
+        return s + 2 * l
+    return s + 2 * l - n
+\end{lstlisting}
+
+The function \texttt{J\_2} is the formula $J(n)=2\ell+1$ with this quick
+search for $2^m$. The function \texttt{J\_binary} is the rule of
+Theorem~\ref{thm:binary}: \texttt{bin(n)} writes $n$ in base $2$ (with the
+prefix \texttt{0b}, which we remove), we move the first digit to the end, and
+\texttt{int(..., 2)} converts back to base $10$. The function \texttt{J\_start}
+is the formula of Theorem~\ref{thm:general}. These three functions give the
+answer for $n=10^9$, and even for $n=10^{100}$, at once.
+
+\subsection{Checking all the results}
+
+To check the formulas, we wrote a second simulation, \texttt{play}, which
+prints nothing and accepts any starting person. It uses a \texttt{deque}, a
+list from which Python can remove the first element quickly.
+
+\Needspace{24\baselineskip}
+\begin{lstlisting}[language=iPython, caption={The simulation used to check every formula.}]
+from collections import deque
+
+
+def play(n, s=1):
+    # I play the game without printing anything, to check the formulas
+    circle = deque(range(1, n + 1))
+    circle.rotate(-(s - 1))      # person s is now the first of the list
+    while len(circle) > 1:
+        circle.rotate(-1)        # the first person is skipped and goes to the back
+        circle.popleft()         # the next one is eliminated
+    return circle[0]
+
+
+def check(N):
+    for n in range(1, N + 1):
+        assert play(n) == J_2(n) == J_binary(n)
+        for s in range(1, n + 1):
+            assert play(n, s) == J_start(n, s)
+    return "all the checks passed for n = 1, ..., " + str(N)
+\end{lstlisting}
+
+In \texttt{play}, the first person of the deque is always the next one to be
+skipped. \texttt{rotate(-1)} sends him to the back of the circle, and
+\texttt{popleft()} eliminates the person who is now first. The function
+\texttt{check(200)} compares, for every $n\leq200$, the game with
+\texttt{J\_2} and \texttt{J\_binary}, and for every starting person $s$, the
+game with \texttt{J\_start}. All the checks passed. We also checked that
+\texttt{J\_0} and \texttt{J\_1} give the same survivor as the formula for
+every $n\leq300$.
+
+\subsection{Comparison of the four functions}
+
+\begin{table}[!ht]
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|l|l|l|l|}
+\hline
+Function & Method & Number of steps & $n=10^9$\\ \hline
+\texttt{J\_0} & plays the game & about $n^2$ & out of reach\\
+\texttt{J\_1} & formula, search over all pairs & more than $n^2$ & out of reach\\
+\texttt{J\_2} & formula, doubling search & about $\log_2 n$ & at once\\
+\texttt{J\_binary} & first digit moved to the end & about $\log_2 n$ & at once\\ \hline
+\end{tabular}
+\caption{The four functions for $J(n)$.}
+\label{tab:code}
+\end{table}
+
+\texttt{J\_0} is the one that helped us most at the start: it shows the
+circle after each elimination, so we could compare it with our drawings.
+\texttt{J\_1} was our first use of the formula. \texttt{J\_2} and
+\texttt{J\_binary} show what a formula brings once it is used well: the answer
+no longer depends on playing the game.

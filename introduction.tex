@@ -1,0 +1,94 @@
+\section{Introduction}
+
+This report presents the work of Group~6 on Problem~0.6 of the project sheet
+of the course Mathematical Problem Solving \cite{projects2026,course2026},
+entitled \emph{Survivor's number}.
+
+\subsection{The problem}
+
+The statement given in the project sheet \cite{projects2026} is the
+following.
+
+\begin{center}\fbox{\begin{minipage}{0.94\textwidth}
+We start with $n$ people numbered $1$ to $n$ around a circle, and we
+eliminate every second remaining person until only one survives. For example,
+for $n=10$, the elimination order is $2,4,6,8,10$, then $3,7,1,9$, so $5$
+survives. Determine the survivor's number, $J(n)$. For example, $J(10)=5$.
+The case $n=0$ makes no sense. First, check that
+\[
+J(1)=1,\quad J(2)=1,\quad J(3)=3,\quad J(4)=1,\quad J(5)=3,\quad J(6)=5 .
+\]
+\end{minipage}}\end{center}
+
+We make the rules precise.
+
+\begin{defi}[The elimination game]\label{def:game}
+Let $n\geq1$. We place $n$ people, numbered $1,2,\dots,n$, around a circle,
+and after person $n$ comes person $1$ again. We go around the circle, always in
+the same direction, and apply the following rules:
+\begin{itemize}
+  \item we skip one person, then we eliminate the next one, then we skip the
+        next one, and so on;
+  \item an eliminated person leaves the circle, so only the people still
+        present are counted;
+  \item the game stops when only one person is left.
+\end{itemize}
+The number of the last person is the \emph{survivor's number}.
+\end{defi}
+
+This elimination game is a classical problem, treated for example in
+\cite[Chapter~1]{concrete}.
+
+In the example of the statement, with $n=10$, the game skips $1$ and
+eliminates $2$, skips $3$ and eliminates $4$, and so on until $10$. It then
+comes back to the beginning of the circle and continues with the people still
+present, until only person $5$ is left.
+
+\subsection{Why we need a formula}
+
+For ten people, the game can be played on paper in a minute. With $1000$
+people it needs $999$ eliminations, and after the first turn the people left
+are no longer consecutive numbers, so it becomes hard to follow who comes
+next. So the question is: \emph{can we find $J(n)$ without playing the whole
+game?} Our objectives are to
+\begin{enumerate}
+  \item find a formula that gives $J(n)$ directly for every $n\geq1$, and prove
+        it;
+  \item find the survivor when the game starts with any person;
+  \item find the survivor quickly for very large circles, and check our
+        results with a computer program.
+\end{enumerate}
+
+\subsection{Who starts the game}\label{sec:assumption}
+
+In the statement, the first person eliminated is person $2$. So person $1$ is
+the first person skipped: the game starts with person $1$. Until the end of
+Section~\ref{sec:formula} we keep this assumption, and $J(n)$ always means the
+survivor of this game. This is not a restriction: a game that starts with
+another person is the same game turned around the circle. Once $J(n)$ is
+known, we use this remark in Section~\ref{sec:general} to treat any starting
+person.
+
+\subsection{Method and plan of the report}
+
+We followed the method of the course \cite{course2026}: play with small
+cases, look for a pattern, make a precise guess, and prove it so that it holds
+for every $n$ and not only for the cases we tested. The report follows the
+same order.
+\begin{itemize}
+  \item \textbf{Section 2} plays the game for $n=1,\dots,16$ and collects the
+        results in a table.
+  \item \textbf{Section 3} proves a key lemma, which says that the game only
+        depends on the places of the people around the circle. With it, we
+        prove how the survivor for $2k$ and $2k+1$ people depends on the
+        survivor for $k$ people, and we show that every $n$ is written in one
+        way as a power of $2$ plus a remainder.
+  \item \textbf{Section 4} proves the formula for $J(n)$ in two ways, by
+        induction on $m$ and by induction on $n$, gives its consequences, and
+        generalises it to a game that starts with any person.
+  \item \textbf{Section 5} writes the formula in base $2$, which gives the
+        survivor at once for very large circles.
+  \item \textbf{Section 6} explains the Python code we wrote to play the game
+        and to check our results.
+  \item \textbf{Section 7} concludes.
+\end{itemize}

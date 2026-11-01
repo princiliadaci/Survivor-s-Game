@@ -1,0 +1,275 @@
+\section{The Formula and Its Generalisation}
+
+In this section we prove the formula suggested by our tests, using the
+results of Section~3. We give two proofs, one by induction on $m$ and one by
+induction on $n$. Up to now the game always started with person $1$. In
+the second part of this section we drop this assumption and find the survivor
+when the game starts with any person.
+
+\subsection{The formula \texorpdfstring{$J(n)=2\ell+1$}{J(n) = 2l + 1}}\label{sec:formula}
+
+\subsubsection{What we observe}
+
+In every line of Table~\ref{tab:results}, the column $J(n)$ is equal to the
+column $2\ell+1$. In other words, the survivor depends only on the remainder
+$\ell$.
+
+\begin{theo}\label{thm:main}
+Let $n\geq1$, written as $n=2^m+\ell$ with $0\leq\ell<2^m$. Then
+\[
+J(n)=2\ell+1 .
+\]
+\end{theo}
+
+\subsubsection{Proof by induction on \texorpdfstring{$m$}{m}}
+
+For $m\geq0$, let $P(m)$ be the statement
+\[
+P(m):\quad\text{for every integer $\ell$ with $0\leq\ell<2^m$,}\quad
+J(2^m+\ell)=2\ell+1 .
+\]
+By Observation~\ref{obs:decomp}, every $n\geq1$ is equal to $2^m+\ell$ for
+one pair $(m,\ell)$ with $0\leq\ell<2^m$. So if $P(m)$ is true for every
+$m\geq0$, the theorem is proved.
+
+\textbf{Base case: $m=0$.} Then $0\leq\ell<2^0=1$, so $\ell=0$, and
+\[
+J(2^0+0)=J(1)=1=2\times0+1 .
+\]
+So $P(0)$ is true.
+
+\textbf{Induction step.} Let $m\geq1$, and assume that $P(m-1)$ is true. Let
+$\ell$ be an integer with $0\leq\ell<2^m$. We show that
+$J(2^m+\ell)=2\ell+1$, in two cases.
+
+\emph{Case 1: $\ell$ is even}, $\ell=2k$. From $0\leq2k<2^m$ we get
+$0\leq k<2^{m-1}$, and
+\[
+2^m+\ell=2^m+2k=2\left(2^{m-1}+k\right).
+\]
+By Observation~\ref{obs:even}, then by $P(m-1)$ applied to $2^{m-1}+k$,
+\[
+J(2^m+\ell)=2J\!\left(2^{m-1}+k\right)-1=2(2k+1)-1=4k+1=2\ell+1 .
+\]
+
+\emph{Case 2: $\ell$ is odd}, $\ell=2k+1$. From $0\leq2k+1<2^m$ we get
+$2k+1\leq2^m-1$, so $k\leq2^{m-1}-1$, that is $0\leq k<2^{m-1}$. Moreover
+\[
+2^m+\ell=2^m+2k+1=2\left(2^{m-1}+k\right)+1 .
+\]
+By Observation~\ref{obs:odd}, then by $P(m-1)$ applied to $2^{m-1}+k$,
+\[
+J(2^m+\ell)=2J\!\left(2^{m-1}+k\right)+1=2(2k+1)+1=4k+3=2\ell+1 .
+\]
+
+In both cases $J(2^m+\ell)=2\ell+1$, so $P(m)$ is true.
+
+\textbf{Conclusion.} $P(0)$ is true, and $P(m-1)$ implies $P(m)$ for every
+$m\geq1$. By induction, $P(m)$ is true for every $m\geq0$: for every $n\geq1$,
+written $n=2^m+\ell$ with $0\leq\ell<2^m$, we have $J(n)=2\ell+1$.
+\hfill$\square$
+
+\textbf{Examples.} $100=2^6+36$ gives $J(100)=73$, the value found by halving
+in Section~\ref{sub:halving}. With $2026=2^{10}+1002$, the formula gives
+$J(2026)=2\times1002+1=2005$ at once.
+
+Since $\ell=n-2^m$, the formula can also be written without $\ell$:
+\[
+J(n)=2n-2^{m+1}+1,
+\]
+where $2^m$ is the largest power of $2$ not bigger than $n$. For $n=10$:
+$J(10)=20-16+1=5$.
+
+\subsubsection{A second proof, by induction on \texorpdfstring{$n$}{n}}
+
+Relation~\eqref{eq:onestep} of Section~\ref{sec:tool}, which adds one person
+at a time, gives a second proof of Theorem~\ref{thm:main}. We prove
+$J(n)=2\ell+1$ by induction on $n$. For $n=1=2^0+0$ we have $J(1)=1$.
+
+Let $n\geq2$, and assume the formula for $n-1$: if $n-1=2^{m'}+\ell'$ with
+$0\leq\ell'<2^{m'}$, then $J(n-1)=2\ell'+1$. There are two cases.
+\begin{itemize}
+  \item If $\ell'\leq2^{m'}-2$, then $n=2^{m'}+(\ell'+1)$ with
+        $\ell'+1<2^{m'}$, so $\ell=\ell'+1$. Moreover
+        $J(n-1)=2\ell'+1\leq2^{m'}+\ell'-1=n-2$, so by \eqref{eq:onestep}
+        $J(n)=J(n-1)+2=2\ell'+3=2\ell+1$.
+  \item If $\ell'=2^{m'}-1$, then $n=2^{m'+1}$, so $\ell=0$. Here
+        $J(n-1)=2^{m'+1}-1=n-1$, the last person, so by \eqref{eq:onestep}
+        $J(n)=1=2\times0+1$.
+\end{itemize}
+In both cases $J(n)=2\ell+1$. \hfill$\square$
+
+The first proof uses the halving of the circle ($n$ becomes about $n/2$), the
+second one adds one person at a time ($n-1$ becomes $n$). They lead to the
+same formula, which is a good check.
+
+\subsubsection{What the formula explains}
+
+The formula proves the remarks we made on Table~\ref{tab:results}.
+
+\begin{coro}\label{cor:consequences}
+Let $n\geq1$, written as $n=2^m+\ell$ with $0\leq\ell<2^m$.
+\begin{enumerate}
+  \item[(a)] $J(n)$ is odd, and $1\leq J(n)\leq n$.
+  \item[(b)] $J(n)=1$ if and only if $n$ is a power of $2$.
+  \item[(c)] $J(n)=n$ if and only if $n=2^{m+1}-1$, as for $n=1,3,7,15$.
+  \item[(d)] $J(n+1)=J(n)+2$ if $n+1$ is not a power of $2$, and $J(n+1)=1$
+        if $n+1$ is a power of $2$.
+\end{enumerate}
+\end{coro}
+
+\begin{proof}
+By Theorem~\ref{thm:main}, $J(n)=2\ell+1$.
+(a) The number $2\ell+1$ is odd and at least $1$. Moreover
+$2\ell+1\leq2^m+\ell$ is the same as $\ell\leq2^m-1$, which is true.
+(b) $2\ell+1=1$ if and only if $\ell=0$, that is $n=2^m$.
+(c) $2\ell+1=2^m+\ell$ if and only if $\ell=2^m-1$, that is $n=2^{m+1}-1$.
+(d) If $n+1$ is not a power of $2$, then $\ell+1<2^m$ (otherwise
+$n+1=2^{m+1}$), so $n+1=2^m+(\ell+1)$ with the same $m$, and
+$J(n+1)=2(\ell+1)+1=J(n)+2$. If $n+1$ is a power of $2$, then $J(n+1)=1$ by
+(b).
+\end{proof}
+
+Point (a) agrees with Step~1 of Section~\ref{sec:even}: every even number
+leaves during the first round. Point (d) is relation~\eqref{eq:onestep} again.
+The table below summarises these points. On each block $2^m\leq n<2^{m+1}$,
+the survivor starts again at $1$ and goes through the odd numbers in
+increasing order, up to the last person $2^{m+1}-1$.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|}
+\hline
+$m$ & block of $n$ & values of $J(n)$, in order\\ \hline
+$0$ & $1$ & $1$\\
+$1$ & $2,3$ & $1,3$\\
+$2$ & $4,\dots,7$ & $1,3,5,7$\\
+$3$ & $8,\dots,15$ & $1,3,5,\dots,15$\\
+$4$ & $16,\dots,31$ & $1,3,5,\dots,31$\\ \hline
+$m$ & $2^m,\dots,2^{m+1}-1$ & $1,3,5,\dots,2^{m+1}-1$\\ \hline
+\end{tabular}
+\end{center}
+A block has $2^m$ values of $n$, and there are exactly $2^m$ odd numbers
+between $1$ and $2^{m+1}-1$, so each odd number appears once in each block.
+
+\subsection{When the game starts with person \texorpdfstring{$s$}{s}}\label{sec:general}
+
+So far, person $1$ was always the first person skipped
+(Section~\ref{sec:assumption}). In a real game we may not know who starts. So
+we ask: \emph{if the game starts with person $s$, who survives?}
+
+\begin{defi}
+Let $n\geq1$ and $1\leq s\leq n$. We write $J_s(n)$ for the survivor of the
+game on the circle $1,2,\dots,n$ that starts with person $s$: we skip $s$,
+eliminate the next person, and go on with the rules of
+Definition~\ref{def:game}. In particular $J_1(n)=J(n)$.
+\end{defi}
+
+\subsubsection{\texorpdfstring{An example: $n=10$ and $s=4$}{An example: n = 10 and s = 4}}
+
+The rounds are now counted from person $4$.
+\begin{itemize}
+  \item Round 1 skips $4$ and eliminates $5,7,9,1,3$. The game is back at
+        person $4$.
+  \item Round 2 skips $4$ and eliminates $6$, skips $8$ and eliminates $10$,
+        skips $2$ and eliminates $4$.
+  \item Only $8$ and $2$ are left. Round 3 skips $8$ and eliminates $2$.
+\end{itemize}
+The survivor is $8$, so $J_4(10)=8$ (Figure~\ref{fig:s4}).
+
+\begin{figure}[!ht]
+\centering
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{cccc}
+\begin{tikzpicture}[baseline=(current bounding box.center)]
+  \foreach \p in {1,...,10}
+    \node[person] (q\p) at ({90-36*(\p-1)}:1.05) {\p};
+  \draw[dashed,thick] (q4) circle ({0.5*\nodesize+0.8mm});
+\end{tikzpicture}
+& \gamecircle{10}{1.05}{}{5,7,9,1,3}{0}
+& \gamecircle{10}{1.05}{5,7,9,1,3}{6,10,4}{0}
+& \gamecircle{10}{1.05}{5,7,9,1,3,6,10,4}{2}{8}\\[3pt]
+\footnotesize start: $s=4$ & \footnotesize Round 1: 5, 7, 9, 1, 3
+& \footnotesize Round 2: 6, 10, 4 & \footnotesize Round 3: 2
+\end{tabular}
+\caption{The game with $10$ people that starts with person $4$ (dashed):
+$J_4(10)=8$.}
+\label{fig:s4}
+\end{figure}
+
+When person $1$ starts, the survivor is $J(10)=5$. Here the game starts three
+places later, and the survivor is also three places later: $5+3=8$.
+
+\subsubsection{Counting places from the first person}
+
+The rule \emph{skip one, eliminate the next} only uses the order of the people
+around the circle. So we number the \emph{places} from the person who starts:
+place $1$ is person $s$, place $2$ is the person after him, and so on. For
+$n=10$ and $s=4$:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+place & 1&2&3&4&5&6&7&8&9&10\\ \hline
+person & 4&5&6&7&8&9&10&1&2&3\\ \hline
+\end{tabular}
+\end{center}
+By Lemma~\ref{lem:places}, the survivor is at place $J(10)=5$, that is
+person $8$. In general the survivor is at place $J(n)$, and we only need to
+know who stands there. Going forward from $s$ we meet $s+1$, $s+2$, \dots, up
+to person $n$, and then we come back to person $1$. So the person at place $i$
+is $s+i-1$ if $s+i-1\leq n$, and $s+i-1-n$ otherwise. For instance, place $8$
+gives $4+8-1=11>10$, so person $11-10=1$.
+
+\subsubsection{The general formula}
+
+Since the survivor is at place $J(n)=2\ell+1$, we obtain the following
+result.
+
+\begin{theo}\label{thm:general}
+Let $n\geq1$ and $1\leq s\leq n$, and write $n=2^m+\ell$ with $0\leq\ell<2^m$.
+If the game starts with person $s$, the survivor is
+\[
+J_s(n)=
+\begin{cases}
+s+2\ell & \text{if } s+2\ell\leq n,\\
+s+2\ell-n & \text{if } s+2\ell>n.
+\end{cases}
+\]
+In words: the survivor is the person $2\ell$ places after $s$ around the
+circle.
+\end{theo}
+
+\begin{proof}
+The game that starts with $s$ starts from the list
+$(a_1,\dots,a_n)=(s,s+1,\dots,n,1,\dots,s-1)$ of the people in the order of
+the circle, where $a_i$ is the person at place $i$. By
+Lemma~\ref{lem:places}, the survivor is $a_{J(n)}$, the person at place
+$J(n)$, and $J(n)=2\ell+1$ by Theorem~\ref{thm:main}. The person at
+place $2\ell+1$ is $s+2\ell$ if $s+2\ell\leq n$, and $s+2\ell-n$ otherwise.
+
+It remains to check that one subtraction of $n$ is always enough, that is
+$s+2\ell-n\leq n$. Since $\ell<2^m$, we have $2\ell<2^m+\ell=n$, and with
+$s\leq n$ we get $s+2\ell<2n$.
+\end{proof}
+
+\textbf{Another way to read the formula.} Since $J(n)=2\ell+1$, we have
+$s+2\ell=J(n)+(s-1)$. So
+\[
+J_s(n)=J(n)+(s-1),\quad\text{minus $n$ if this is bigger than $n$.}
+\]
+Starting the game $s-1$ places later moves the survivor $s-1$ places later.
+This is what we saw for $n=10$ and $s=4$: $J_4(10)=5+3=8$.
+
+\textbf{Checks.} For $s=1$ the formula gives $J_1(n)=1+2\ell=J(n)$, as it should. For
+$n=10=2^3+2$ we have $\ell=2$, so the survivor is $4$ places after $s$:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$s$ & 1&2&3&4&5&6&7&8&9&10\\ \hline
+$J_s(10)$ & 5&6&7&8&9&10&1&2&3&4\\ \hline
+\end{tabular}
+\end{center}
+From $s=7$ on, $s+4>10$ and we subtract $10$: for instance $J_8(10)=8+4-10=2$.
+We also checked the formula with a computer simulation of the game, for every
+$n\leq200$ and every starting person $s$.

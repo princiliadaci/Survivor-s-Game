@@ -1,0 +1,164 @@
+\section{Very Large Circles: Base 2}
+
+To use the formula $J(n)=2\ell+1$, we must first write $n=2^m+\ell$, that is,
+find the largest power of $2$ not bigger than $n$. For a large $n$ this is not
+immediate in base $10$. In base $2$ it is: the decomposition can be read
+directly on the digits of $n$, and the formula becomes a simple operation on
+these digits. In this whole section, the game starts with person $1$, as in
+Section~\ref{sec:formula}: $J(n)$ is the survivor of the usual game.
+
+\subsection{Reading \texorpdfstring{$2^m$}{2\^{}m} and \texorpdfstring{$\ell$}{l} in base 2}\label{sec:bindecomp}
+
+In base $2$, a number is written with the digits $0$ and $1$, and each digit
+stands for a power of $2$. For instance
+\[
+10=(1010)_2=1\cdot2^3+0\cdot2^2+1\cdot2^1+0\cdot2^0=8+2 .
+\]
+Let $n\geq1$, with $2^m\leq n<2^{m+1}$. Then $n$ has exactly $m+1$ digits in
+base $2$, and the first one is a $1$:
+\[
+n=(1\,b_{m-1}\,b_{m-2}\cdots b_0)_2
+ =2^m+\underbrace{b_{m-1}2^{m-1}+\dots+b_12+b_0}_{=\,\ell}.
+\]
+Since each $b_i$ is $0$ or $1$, the remainder satisfies
+$0\leq\ell\leq2^{m-1}+\dots+2+1=2^m-1<2^m$. So this is exactly the
+decomposition of Observation~\ref{obs:decomp}: the first digit gives $2^m$,
+and the other digits give $\ell$. For $n=10=(1\,010)_2$ we read $2^3=8$ and
+$\ell=(010)_2=2$.
+
+\subsection{The rule: move the first digit to the end}
+
+\begin{theo}\label{thm:binary}
+If the game starts with person $1$ and $n=(1\,b_{m-1}\cdots b_1b_0)_2$, then
+\[
+J(n)=(b_{m-1}\cdots b_1b_0\,1)_2 .
+\]
+In words: to get $J(n)$, we take the first digit of $n$ in base $2$, which is
+a $1$, and move it to the end.
+\end{theo}
+
+\begin{proof}
+By Section~\ref{sec:bindecomp}, $\ell=(b_{m-1}\cdots b_0)_2=\sum_{i=0}^{m-1}b_i2^i$, and
+$J(n)=2\ell+1$ by Theorem~\ref{thm:main}. Multiplying by $2$ moves every digit
+one place to the left, and adding $1$ writes a $1$ in the last place:
+\[
+2\ell+1=\sum_{i=0}^{m-1}b_i2^{i+1}+1
+=b_{m-1}2^m+b_{m-2}2^{m-1}+\dots+b_02^1+1\cdot2^0
+=(b_{m-1}\cdots b_0\,1)_2 .
+\]
+\end{proof}
+
+Table~\ref{tab:binary} shows the rule on our sixteen tests. When the digit
+after the first one is $0$, the result starts with $0$, and this $0$ is simply
+dropped: for $n=8=(1000)_2$ we get $(0001)_2=1$.
+
+\begin{table}[!ht]
+\centering
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$n$ & $n$ in base 2 & $J(n)$ in base 2 & $J(n)$\\ \hline
+1 & 1 & 1 & 1\\
+2 & 10 & 01 & 1\\
+3 & 11 & 11 & 3\\
+4 & 100 & 001 & 1\\
+5 & 101 & 011 & 3\\
+6 & 110 & 101 & 5\\
+7 & 111 & 111 & 7\\
+8 & 1000 & 0001 & 1\\
+9 & 1001 & 0011 & 3\\
+10 & 1010 & 0101 & 5\\
+11 & 1011 & 0111 & 7\\
+12 & 1100 & 1001 & 9\\
+13 & 1101 & 1011 & 11\\
+14 & 1110 & 1101 & 13\\
+15 & 1111 & 1111 & 15\\
+16 & 10000 & 00001 & 1\\ \hline
+\end{tabular}
+\caption{The first digit of $n$ moves to the end. The values agree with
+Table~\ref{tab:results}.}
+\label{tab:binary}
+\end{table}
+
+\subsection{What base 2 shows}
+
+Base $2$ gives another view of Corollary~\ref{cor:consequences}.
+\begin{itemize}
+  \item \textbf{$J(n)$ and $n$ have the same number of digits $1$.} Moving a
+        digit, or dropping a $0$ at the front, does not change the number of
+        $1$'s. For example $10=(1010)_2$ and $J(10)=5=(101)_2$ both have two.
+  \item \textbf{$J(n)=1$ exactly when $n$ is a power of $2$.} The result
+        $(b_{m-1}\cdots b_0\,1)_2$ is equal to $1$ only when all the $b_i$ are
+        $0$, that is when $n=(10\cdots0)_2=2^m$.
+  \item \textbf{$J(n)=n$ exactly when all the digits of $n$ are $1$.} The
+        strings $1\,b_{m-1}\cdots b_1b_0$ and $b_{m-1}\cdots b_1b_0\,1$ are equal
+        when $b_{m-1}=1$, $b_{m-2}=b_{m-1}$, \dots, $b_0=b_1$, so when all the
+        digits are $1$: $n=(11\cdots1)_2=2^{m+1}-1$, as for $n=3$, $7$, $15$.
+\end{itemize}
+
+\Needspace{14\baselineskip}
+\subsection{Computing \texorpdfstring{$J(n)$}{J(n)} by hand for a large \texorpdfstring{$n$}{n}}
+
+To find $J(n)$ by hand for a large $n$, we follow four steps:
+\begin{enumerate}
+  \item write $n$ in base $2$, by dividing by $2$ again and again and keeping
+        the remainders;
+  \item remove the first digit, which is a $1$;
+  \item write a $1$ at the end of what is left;
+  \item convert the result back to base $10$.
+\end{enumerate}
+
+\textbf{Example: $n=1000$.} We divide by $2$ until we reach $0$:
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{l*{10}{c}}
+number & 1000 & 500 & 250 & 125 & 62 & 31 & 15 & 7 & 3 & 1\\
+remainder & 0 & 0 & 0 & 1 & 0 & 1 & 1 & 1 & 1 & 1
+\end{tabular}
+\end{center}
+Reading the remainders from right to left gives $1000=(1111101000)_2$. We move
+the first $1$ to the end:
+\[
+(1\,111101000)_2\ \longrightarrow\ (111101000\,1)_2=512+256+128+64+16+1=977 .
+\]
+So $J(1000)=977$. With the formula: $1000=512+488$, so
+$J(1000)=2\times488+1=977$.
+
+\textbf{Example: $n=2026$.} We have $2026=(11111101010)_2$. Moving the first digit to the end gives
+\[
+(1\,1111101010)_2\ \longrightarrow\ (1111101010\,1)_2=2005,
+\]
+so $J(2026)=2005$. This agrees with
+$2026=2^{10}+1002$ and $2\times1002+1=2005$.
+
+\textbf{Larger values.} Table~\ref{tab:large} gives a few larger values, all obtained by moving the
+first digit. We also checked them with the program of Section~6. In the line
+$n=10\,000$, two zeros appear at the front after the move and are dropped.
+
+\noindent\begin{minipage}{\textwidth}\centering
+\renewcommand{\arraystretch}{1.15}
+\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{|r|l|r|l|}
+\hline
+$n$ & $n$ in base 2 & $J(n)$ & $J(n)$ in base 2\\ \hline
+$1000$ & 1111101000 & $977$ & 1111010001\\
+$2026$ & 11111101010 & $2005$ & 11111010101\\
+$10\,000$ & 10011100010000 & $3617$ & 111000100001\\
+$10^6$ & 11110100001001000000 & $951\,425$ & 11101000010010000001\\
+$2^{20}$ & 1 followed by twenty 0 & $1$ & 1\\
+$2^{20}-1$ & twenty digits 1 & $1\,048\,575$ & twenty digits 1\\
+$2^{20}+1$ & 1, nineteen 0, 1 & $3$ & 11\\
+$10^9$ & 111011100110101100101000000000 & $926\,258\,177$ & 110111001101011001010000000001\\ \hline
+\end{tabular}
+\captionof{table}{Large values of $J(n)$. In each line, $n$ and $J(n)$ have the same
+number of digits $1$.}
+\label{tab:large}
+\end{minipage}
+\par\medskip
+
+For $n=10^6$, there are $20$ digits, so $m=19$, $2^{19}=524\,288$ and
+$\ell=10^6-524\,288=475\,712$, which gives $J(10^6)=951\,425$. For $n=10^9$,
+the game itself needs $999\,999\,999$ eliminations. With base
+$2$, we only handle the $30$ digits of $n$. In general, $n$ has about
+$\log_2 n$ digits in base $2$, so the work grows like $\log_2 n$ instead of
+$n$.

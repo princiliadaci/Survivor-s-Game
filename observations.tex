@@ -1,0 +1,346 @@
+\section{What the Table Shows, and Why}
+
+Table~\ref{tab:results} suggests several rules. In this section we state them
+one by one and prove each of them, so that they hold for every number of
+people and not only for the sixteen circles we played. We first prove a lemma
+that we use in all the proofs: the game only depends on the places of the
+people, not on their numbers. The first two rules then link a circle of $2k$
+or $2k+1$ people to a circle of $k$ people. The third one is about the way
+each $n$ is written in the table.
+
+\subsection{The key lemma: only the places matter}\label{sec:tool}
+
+At any moment of the game, the people still present stand around the circle
+in a fixed order. We write them as a list, starting with the person who is
+skipped next.
+
+\begin{defi}\label{def:list}
+A \emph{list} $(a_1,a_2,\dots,a_k)$ is the sequence of the $k$ people still
+present, in the order of the circle, where $a_1$ is the next person to be
+skipped. If $k\geq2$, one \emph{step} of the game skips $a_1$ and eliminates
+$a_2$. The next person to be skipped is then $a_3$, and $a_1$ is now the last
+person before we come back to $a_3$:
+\[
+(a_1,a_2,a_3,\dots,a_k)\longrightarrow(a_3,a_4,\dots,a_k,a_1).
+\]
+For $k=2$, the new list is $(a_1)$. When $k=1$ the game is over and $a_1$ is
+the survivor.
+\end{defi}
+
+Each step removes one person, so a game with $k$ people ends after $k-1$
+steps. The game of Definition~\ref{def:game} starts from the list
+$(1,2,\dots,n)$. For example, with $n=5$:
+\[
+(1,2,3,4,5)\to(3,4,5,1)\to(5,1,3)\to(3,5)\to(3).
+\]
+The people eliminated are $2,4,1,5$, in this order, and the survivor is $3$,
+as in Table~\ref{tab:results}.
+
+The step rule only uses the places in the list, never the numbers of the
+people. This is what the next lemma says.
+
+\begin{lemma}[Only the places matter]\label{lem:places}
+Let $(a_1,\dots,a_k)$ be a list of $k\geq1$ people. The survivor of the game
+that starts from this list is $a_{J(k)}$, the person at place $J(k)$.
+\end{lemma}
+
+\begin{proof}
+We prove by induction on $k\geq1$ the statement
+\[
+L(k):\quad\text{for every list $(a_1,\dots,a_k)$ of $k$ people, the survivor
+is $a_{J(k)}$.}
+\]
+\emph{Base case.} For $k=1$, the only person $a_1$ is the survivor, and
+$J(1)=1$. So $L(1)$ is true.
+
+\emph{Induction step.} Let $k\geq2$ and assume $L(k-1)$. Take a list
+$(a_1,\dots,a_k)$. One step gives the list of $k-1$ people
+\[
+(b_1,\dots,b_{k-1})=(a_3,a_4,\dots,a_k,a_1),
+\]
+that is, $b_j=a_{f(j)}$ with
+\[
+f(j)=\begin{cases} j+2 & \text{if } 1\leq j\leq k-2,\\ 1 & \text{if } j=k-1.
+\end{cases}
+\]
+The game goes on from this new list, so by $L(k-1)$ its survivor is
+$b_{J(k-1)}=a_{f(J(k-1))}$. This is true for every list. For the list
+$(1,2,\dots,k)$, which is the usual game with $k$ people, the survivor is
+$J(k)$ by definition, so $J(k)=f\big(J(k-1)\big)$. Going back to any list, the
+survivor is therefore $a_{f(J(k-1))}=a_{J(k)}$, and $L(k)$ is true.
+
+By induction, $L(k)$ is true for every $k\geq1$.
+\end{proof}
+
+The proof also gives a relation between $J(k)$ and $J(k-1)$. Since
+$J(k)=f\big(J(k-1)\big)$,
+\begin{equation}\label{eq:onestep}
+J(k)=\begin{cases} J(k-1)+2 & \text{if } J(k-1)\leq k-2,\\
+1 & \text{if } J(k-1)=k-1 .\end{cases}
+\end{equation}
+In words: adding one person moves the survivor two places, except when the
+survivor was the last person, in which case it goes back to person $1$. This
+is what we saw in Table~\ref{tab:results}. Relation~\eqref{eq:onestep} gives
+$J(n)$ for every $n$, but it needs $n-1$ steps. The two relations of the next
+subsections are much faster, because they divide $n$ by $2$.
+
+\subsection{Even circles: \texorpdfstring{$J(2k)=2J(k)-1$}{J(2k) = 2J(k) - 1}}\label{sec:even}
+
+\subsubsection{What we observe}
+
+We put side by side the survivor for $k$ people and the survivor for $2k$
+people.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$k$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8\\ \hline
+$J(k)$ & 1 & 1 & 3 & 1 & 3 & 5 & 7 & 1\\ \hline
+$J(2k)$ & 1 & 1 & 5 & 1 & 5 & 9 & 13 & 1\\ \hline
+$2J(k)-1$ & 1 & 1 & 5 & 1 & 5 & 9 & 13 & 1\\ \hline
+\end{tabular}
+\end{center}
+The last two lines are equal in all eight cases.
+
+\begin{obs}\label{obs:even}
+For every $k\geq1$, \ $J(2k)=2J(k)-1$.
+\end{obs}
+
+\subsubsection{Proof}
+
+Let $k\geq1$, and let $n=2k$ people stand around the circle. The idea is to
+play the first round completely, and to see that what is left is a game with
+$k$ people.
+
+\textbf{Step 1: the first round eliminates exactly the even numbers.} We show
+by induction on $j$, for $j=1,\dots,k$, the statement
+\[
+E(j):\quad\text{the first $j$ eliminations skip $1,3,\dots,2j-1$ and
+eliminate $2,4,\dots,2j$.}
+\]
+\emph{Base case.} The game starts by skipping person $1$ and eliminating
+person $2$, so $E(1)$ is true.
+
+\emph{Induction step.} Let $1\leq j<k$ and assume $E(j)$. At this point the
+people eliminated are $2,4,\dots,2j$, and the last one is $2j$. The next
+person is $2j+1$. The people
+$2j+1$ and $2j+2$ are still present, and $2j+2\leq2k$. So the game skips
+$2j+1$ and eliminates $2j+2$, and $E(j+1)$ is true.
+
+By $E(k)$, the $k$-th person eliminated is $2k$, the last person of the circle. The
+next person is person $1$, who is still present: we are back at the beginning
+of the circle and the first round is over. It has eliminated
+$2,4,\dots,2k$, and the $k$ people left are, in the order of the circle,
+\[
+1,\ 3,\ 5,\ \dots,\ 2k-1 .
+\]
+The game goes on by skipping person $1$.
+
+\textbf{Step 2: the people left form a game with $k$ people.} We write the
+people left as a list $(a_1,a_2,\dots,a_k)$, in the order of the circle,
+starting with the person who is skipped next:
+\[
+a_i=2i-1\qquad(i=1,\dots,k),
+\]
+so $a_1=1$, $a_2=3$, \dots, $a_k=2k-1$ (Figure~\ref{fig:even}). The rest of the
+game is the game of Definition~\ref{def:game} played on $a_1,\dots,a_k$ instead
+of $1,\dots,k$: the circle has $k$ people and it starts by skipping the first
+one.
+
+\textbf{Step 3: the survivor is $a_{J(k)}$.} By Lemma~\ref{lem:places},
+applied to the list $(a_1,\dots,a_k)$, the survivor is the person at place
+$J(k)$ of this list. So
+\[
+J(2k)=a_{J(k)}=2J(k)-1 .
+\]
+This proves Observation~\ref{obs:even} for every $k\geq1$. \hfill$\square$
+
+\begin{figure}[!ht]
+\centering
+\renewcommand{\nodesize}{7mm}\renewcommand{\nodefont}{\footnotesize}\footnotesize
+\begin{tikzpicture}
+  \draw[gray,dotted,very thick] (-35:2.1) arc (-35:-235:2.1);
+  \node[person] (a1) at (90:2.1) {1};
+  \node[gone] (a2) at (55:2.1) {}; \cross{a2} \node[fill=white,inner sep=0.4pt] at (a2) {2};
+  \node[person] (a3) at (20:2.1) {3};
+  \node[gone] (a4) at (-15:2.1) {}; \cross{a4} \node[fill=white,inner sep=0.4pt] at (a4) {4};
+  \node[gone] (a6) at (125:2.1) {}; \cross{a6} \node[font=\scriptsize,fill=white,inner sep=0.4pt] at (a6) {$2k$};
+  \node[person,font=\scriptsize,minimum size=8.5mm] at (160:2.1) {$2k{-}1$};
+  \node[font=\scriptsize] at (90:2.75) {$a_1$};
+  \node[font=\scriptsize] at (20:2.75) {$a_2$};
+  \node[font=\scriptsize] at (160:2.8) {$a_k$};
+\end{tikzpicture}
+\caption{The circle of $2k$ people after the first round: $a_i=2i-1$. The
+dotted arc stands for the people not drawn.}
+\label{fig:even}
+\end{figure}
+
+\textbf{Example.} For $n=10$, the first round leaves $(1,3,5,7,9)$. Since
+$J(5)=3$, the survivor is the third person of this list, $a_3=5$. So
+$J(10)=2\times3-1=5$, as in Table~\ref{tab:results}.
+
+\subsection{Odd circles: \texorpdfstring{$J(2k+1)=2J(k)+1$}{J(2k+1) = 2J(k) + 1}}
+
+\subsubsection{What we observe}
+
+We now compare the survivor for $k$ people and for $2k+1$ people.
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+$k$ & 1 & 2 & 3 & 4 & 5 & 6 & 7\\ \hline
+$J(k)$ & 1 & 1 & 3 & 1 & 3 & 5 & 7\\ \hline
+$J(2k+1)$ & 3 & 3 & 7 & 3 & 7 & 11 & 15\\ \hline
+$2J(k)+1$ & 3 & 3 & 7 & 3 & 7 & 11 & 15\\ \hline
+\end{tabular}
+\end{center}
+Again, the last two lines are equal in all seven cases.
+
+\begin{obs}\label{obs:odd}
+For every $k\geq1$, \ $J(2k+1)=2J(k)+1$.
+\end{obs}
+
+\subsubsection{Proof}
+
+Let $k\geq1$, and let $n=2k+1$ people stand around the circle. We follow the
+same three steps as for $2k$ people. Only the end of the first round changes.
+
+\textbf{Step 1: the first round.} The induction of the previous proof works
+without change: the first $k$ eliminations skip $1,3,\dots,2k-1$ and
+eliminate $2,4,\dots,2k$. Indeed, for $j<k$ we still have $2j+2\leq2k<2k+1$.
+
+After the $k$-th elimination (person $2k$), one person remains before the end
+of the circle: person $2k+1$. He is skipped. The next person is person $1$,
+since after person $2k+1$ we come back to the beginning of the circle, and
+person $1$ is eliminated. As said in Section~\ref{sec:conventions}, this elimination belongs to
+the first round. So the first round eliminates $2,4,\dots,2k$ and then $1$,
+and the $k$ people left are
+\[
+3,\ 5,\ 7,\ \dots,\ 2k+1 .
+\]
+The game goes on with the first person after $1$ who is still present.
+Person $2$ is already eliminated, so this is person $3$, and he is the next one
+skipped.
+
+\textbf{Step 2: the people left form a game with $k$ people.} This time the
+list starts with person $3$:
+\[
+a_i=2i+1\qquad(i=1,\dots,k),
+\]
+so $a_1=3$, $a_2=5$, \dots, $a_k=2k+1$ (Figure~\ref{fig:odd}). The rest of the
+game is again the game of Definition~\ref{def:game} with $k$ people, played on
+$a_1,\dots,a_k$.
+
+\textbf{Step 3: the survivor.} By Lemma~\ref{lem:places}, the survivor is
+the person at place $J(k)$ of the list, so
+\[
+J(2k+1)=a_{J(k)}=2J(k)+1 .
+\]
+This proves Observation~\ref{obs:odd} for every $k\geq1$. \hfill$\square$
+
+\begin{figure}[!ht]
+\centering
+\renewcommand{\nodesize}{7mm}\renewcommand{\nodefont}{\footnotesize}\footnotesize
+\begin{tikzpicture}
+  \draw[gray,dotted,very thick] (-35:2.1) arc (-35:-235:2.1);
+  \node[gone] (b1) at (90:2.1) {}; \cross{b1} \node[fill=white,inner sep=0.4pt] at (b1) {1};
+  \node[gone] (b2) at (55:2.1) {}; \cross{b2} \node[fill=white,inner sep=0.4pt] at (b2) {2};
+  \node[person] (b3) at (20:2.1) {3};
+  \node[gone] (b4) at (-15:2.1) {}; \cross{b4} \node[fill=white,inner sep=0.4pt] at (b4) {4};
+  \node[gone] (b5) at (160:2.1) {}; \cross{b5} \node[font=\scriptsize,fill=white,inner sep=0.4pt] at (b5) {$2k$};
+  \node[person,font=\scriptsize,minimum size=8.5mm] at (125:2.1) {$2k{+}1$};
+  \node[font=\scriptsize] at (20:2.75) {$a_1$};
+  \node[font=\scriptsize] at (125:2.8) {$a_k$};
+\end{tikzpicture}
+\caption{The circle of $2k+1$ people after the first round: $a_i=2i+1$.
+Person $1$ is eliminated at the end of the round, so the list starts with
+person $3$.}
+\label{fig:odd}
+\end{figure}
+
+\textbf{Example.} For $n=11$, the first round eliminates $2,4,6,8,10$ and then
+$1$, and leaves $(3,5,7,9,11)$. Since $J(5)=3$, the survivor is $a_3=7$. So
+$J(11)=2\times3+1=7$, as in Table~\ref{tab:results}.
+
+\FloatBarrier
+\subsubsection{Computing \texorpdfstring{$J(n)$}{J(n)} by halving}\label{sub:halving}
+
+With $J(1)=1$, Observations~\ref{obs:even} and~\ref{obs:odd} give $J(n)$ for
+every $n$. We divide $n$ by $2$ (rounding down) until we reach $1$, then we go
+back up with the two relations. For $n=100$:
+\[
+100\to50\to25\to12\to6\to3\to1,
+\]
+and
+\begin{align*}
+J(3)&=2J(1)+1=3, & J(6)&=2J(3)-1=5, & J(12)&=2J(6)-1=9,\\
+J(25)&=2J(12)+1=19, & J(50)&=2J(25)-1=37, & J(100)&=2J(50)-1=73.
+\end{align*}
+For $n=1000$, the halvings are
+$1000\to500\to250\to125\to62\to31\to15\to7\to3\to1$, and going back up gives
+\begin{align*}
+&J(3)=3, && J(7)=7, && J(15)=15, && J(31)=31, && J(62)=61,\\
+&J(125)=123, && J(250)=245, && J(500)=489, && J(1000)=977 .
+\end{align*}
+About $\log_2 n$ steps replace the $n-1$ eliminations of the game: $6$ steps
+for $n=100$ and $9$ steps for $n=1000$. Still, this does not tell us what $J(n)$
+looks like. For that we go back to the way the numbers are written in
+Table~\ref{tab:results}.
+
+\subsection{Every \texorpdfstring{$n$}{n} is \texorpdfstring{$2^m+\ell$}{2\^{}m+l} in exactly one way}
+
+\subsubsection{What we observe}
+
+In Table~\ref{tab:results}, each $n$ is written as $2^m+\ell$, where $2^m$ is
+the largest power of $2$ that is not bigger than $n$:
+\[
+5=2^2+1,\qquad 10=2^3+2,\qquad 15=2^3+7,\qquad 16=2^4+0 .
+\]
+In every line the remainder $\ell$ is smaller than $2^m$, and there is only
+one such way to write $n$. For instance, $10=2^2+6$ is not allowed, because
+$6\geq2^2$.
+
+\begin{obs}\label{obs:decomp}
+Every integer $n\geq1$ can be written in exactly one way as
+\[
+n=2^m+\ell,\qquad m\geq0,\quad 0\leq\ell<2^m .
+\]
+\end{obs}
+
+\subsubsection{Proof by induction}
+
+\textbf{Existence, by strong induction on $n$.} For $n=1$ we have
+$1=2^0+0$, and $0<2^0$.
+
+Let $n\geq2$, and assume that every integer $k$ with $1\leq k<n$ can be
+written $k=2^p+r$ with $0\leq r<2^p$. We write $n=2k$ if $n$ is even, or
+$n=2k+1$ if $n$ is odd. In both cases $1\leq k<n$, so $k=2^p+r$ with
+$0\leq r<2^p$.
+\begin{itemize}
+  \item If $n=2k$, then $n=2^{p+1}+2r$, and $0\leq2r<2\cdot2^p=2^{p+1}$.
+  \item If $n=2k+1$, then $n=2^{p+1}+(2r+1)$. Since $r\leq2^p-1$, we get
+        $2r+1\leq2^{p+1}-1<2^{p+1}$.
+\end{itemize}
+In both cases $n=2^m+\ell$ with $m=p+1$ and $0\leq\ell<2^m$.
+
+\textbf{Uniqueness.} The condition $0\leq\ell<2^m$, with $\ell=n-2^m$, means
+\begin{equation}\label{eq:block}
+2^m\leq n<2^{m+1},
+\end{equation}
+since $\ell\geq0$ means $2^m\leq n$, and $\ell<2^m$ means
+$n<2^m+2^m=2^{m+1}$. Assume that $n=2^m+\ell=2^{m'}+\ell'$ are two such
+writings, with $m<m'$. Then $m+1\leq m'$, and \eqref{eq:block} for $m$ and for
+$m'$ gives
+\[
+n<2^{m+1}\leq2^{m'}\leq n,
+\]
+which is impossible. In the same way $m'<m$ is impossible. So $m=m'$, and
+then $\ell=n-2^m=\ell'$. \hfill$\square$
+
+The proof also shows how to find $m$ and $\ell$: by \eqref{eq:block}, $2^m$ is
+the largest power of $2$ not bigger than $n$, and $\ell=n-2^m$. For example,
+$64\leq100<128$ gives $100=2^6+36$. The integers with the same $m$ form the
+blocks $2^m\leq n<2^{m+1}$ separated by lines in Table~\ref{tab:results}.
+
+The three results of this section are the tools we need. In the next section
+we use them to prove a formula for $J(n)$.
