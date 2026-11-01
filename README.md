@@ -60,7 +60,10 @@ made with the AIMS Senegal Assignment template, and the compiled PDF
 | `code.tex`          | Section 6, The Python Code                     |
 | `conclusion.tex`    | Section 7, Conclusion                          |
 | `lstlisting.tex`    | style of the Python listings (AIMS template)   |
-| `AIMSSenegalLogo.jpeg` | logo used in the header                     |
+
+The AIMS Senegal logo is not included in this repository. It comes with the
+Assignment template provided by AIMS Senegal. To compile the report, put the
+file `AIMSSenegalLogo.jpeg` from this template in the folder `report`.
 
 To compile, run `pdflatex` three times on the main file (for the table of
 contents and the references):
